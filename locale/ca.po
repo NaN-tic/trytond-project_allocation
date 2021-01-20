@@ -1,0 +1,23 @@
+#
+msgid ""
+msgstr "Content-Type: text/plain; charset=utf-8\n"
+
+msgctxt "field:project.allocation,employee:"
+msgid "Employee"
+msgstr "Empleat"
+
+msgctxt "field:project.allocation,work:"
+msgid "Work"
+msgstr "Treball"
+
+msgctxt "field:project.work,allocations:"
+msgid "Allocations"
+msgstr "Assignacions"
+
+msgctxt "model:project.allocation,name:"
+msgid "Allocation"
+msgstr "Assignació"
+
+msgctxt "view:project.work:"
+msgid "Allocations"
+msgstr "Assignacions"
