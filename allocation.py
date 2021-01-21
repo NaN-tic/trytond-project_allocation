@@ -15,7 +15,6 @@ class Allocation(ModelSQL, ModelView):
     work = fields.Many2One('project.work', 'Work', required=True,
             select=True, ondelete='CASCADE')
 
-
     def get_rec_name(self, name):
         return self.employee.rec_name
 
@@ -30,3 +29,13 @@ class Work(metaclass=PoolMeta):
         states={
             'invisible': Eval('type') != 'task',
             }, depends=['type'])
+    employees = fields.Function(fields.Char('Employees'), 'get_employees',
+        searcher='search_employees')
+
+    def get_employees(self, name):
+        return ', '.join(sorted([x.employee.rec_name for x in
+                    self.allocations]))
+
+    @classmethod
+    def search_employees(cls, name, clause):
+        return [('allocations.employee',) + tuple(clause[1:])]
