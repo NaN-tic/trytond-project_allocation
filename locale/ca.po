@@ -14,6 +14,10 @@ msgctxt "field:project.work,allocations:"
 msgid "Allocations"
 msgstr "Assignacions"
 
+msgctxt "field:project.work,employees:"
+msgid "Employees"
+msgstr "Empleats"
+
 msgctxt "model:project.allocation,name:"
 msgid "Allocation"
 msgstr "Assignació"
