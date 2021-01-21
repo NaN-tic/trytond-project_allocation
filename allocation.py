@@ -1,8 +1,8 @@
 # This file is part of Tryton.  The COPYRIGHT file at the top level of
 # this repository contains the full copyright notices and license terms.
-from trytond.model import ModelView, ModelSQL, fields, tree
+from trytond.model import ModelView, ModelSQL, fields
 from trytond.pool import PoolMeta
-from trytond.pyson import Eval
+
 
 __all__ = ['Allocation']
 
@@ -25,10 +25,7 @@ class Allocation(ModelSQL, ModelView):
 
 class Work(metaclass=PoolMeta):
     __name__ = 'project.work'
-    allocations = fields.One2Many('project.allocation', 'work', 'Allocations',
-        states={
-            'invisible': Eval('type') != 'task',
-            }, depends=['type'])
+    allocations = fields.One2Many('project.allocation', 'work', 'Allocations')
     employees = fields.Function(fields.Char('Employees'), 'get_employees',
         searcher='search_employees')
 
