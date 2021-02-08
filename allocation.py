@@ -2,6 +2,7 @@
 # this repository contains the full copyright notices and license terms.
 from trytond.model import ModelView, ModelSQL, fields
 from trytond.pool import PoolMeta
+from trytond.pyson import Eval
 
 
 __all__ = ['Allocation']
@@ -11,7 +12,9 @@ class Allocation(ModelSQL, ModelView):
     'Allocation'
     __name__ = 'project.allocation'
     employee = fields.Many2One('company.employee', 'Employee', required=True,
-            select=True, ondelete='CASCADE')
+            domain=[
+                ('company', '=', Eval('context', {}).get('company', -1)),
+            ], select=True, ondelete='CASCADE')
     work = fields.Many2One('project.work', 'Work', required=True,
             select=True, ondelete='CASCADE')
 
