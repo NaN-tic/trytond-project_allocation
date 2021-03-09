@@ -13,10 +13,12 @@ class Allocation(ModelSQL, ModelView):
     __name__ = 'project.allocation'
     employee = fields.Many2One('company.employee', 'Employee', required=True,
             domain=[
-                ('company', '=', Eval('context', {}).get('company', -1)),
-            ], select=True, ondelete='CASCADE')
+                ('company', '=', Eval('company')),
+            ], depends=['company'], select=True, ondelete='CASCADE')
     work = fields.Many2One('project.work', 'Work', required=True,
             select=True, ondelete='CASCADE')
+    company = fields.Function(fields.Many2One('company.company', 'Company'),
+        'get_company', searcher='search_company')
 
     def get_rec_name(self, name):
         return self.employee.rec_name
@@ -24,6 +26,13 @@ class Allocation(ModelSQL, ModelView):
     @classmethod
     def search_rec_name(cls, name, clause):
         return [('employee.rec_name',) + tuple(clause[1:])]
+
+    def get_company(self, name):
+        return self.work.company.id if self.work.company else None
+
+    @classmethod
+    def search_company(cls, name, clause):
+        return [('work.company',) + tuple(clause[1:])]
 
 
 class Work(metaclass=PoolMeta):
