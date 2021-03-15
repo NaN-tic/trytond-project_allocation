@@ -18,7 +18,7 @@ class Allocation(ModelSQL, ModelView):
     work = fields.Many2One('project.work', 'Work', required=True,
             select=True, ondelete='CASCADE')
     company = fields.Function(fields.Many2One('company.company', 'Company'),
-        'get_company', searcher='search_company')
+        'on_change_with_company', searcher='search_company')
 
     def get_rec_name(self, name):
         return self.employee.rec_name
@@ -27,8 +27,10 @@ class Allocation(ModelSQL, ModelView):
     def search_rec_name(cls, name, clause):
         return [('employee.rec_name',) + tuple(clause[1:])]
 
-    def get_company(self, name):
-        return self.work.company.id if self.work.company else None
+    @fields.depends('work', '_parent_work.company')
+    def on_change_with_company(self, name=None):
+        if self.work and self.work.company:
+            return self.work.company.id
 
     @classmethod
     def search_company(cls, name, clause):
@@ -40,6 +42,15 @@ class Work(metaclass=PoolMeta):
     allocations = fields.One2Many('project.allocation', 'work', 'Allocations')
     employees = fields.Function(fields.Char('Employees'), 'get_employees',
         searcher='search_employees')
+
+    @classmethod
+    def __setup__(cls):
+        super(Work, cls).__setup__()
+        readonly = Eval('allocations', [0])
+        if 'readonly' in cls.company.states:
+            cls.company.states['readonly'] |= readonly
+        else:
+            cls.company.states['readonly'] = readonly
 
     def get_employees(self, name):
         return ', '.join(sorted([x.employee.rec_name for x in

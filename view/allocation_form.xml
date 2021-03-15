@@ -6,5 +6,4 @@ this repository contains the full copyright notices and license terms. -->
     <field name="employee"/>
     <label name="work"/>
     <field name="work"/>
-    <field name="company" invisible="1" colspan="6"/>
 </form>
