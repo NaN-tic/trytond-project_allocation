@@ -2,7 +2,7 @@
 # this repository contains the full copyright notices and license terms.
 from trytond.model import ModelView, ModelSQL, fields
 from trytond.pool import PoolMeta
-from trytond.pyson import Eval
+from trytond.pyson import Bool, Eval
 
 
 __all__ = ['Allocation']
@@ -46,7 +46,7 @@ class Work(metaclass=PoolMeta):
     @classmethod
     def __setup__(cls):
         super(Work, cls).__setup__()
-        readonly = Eval('allocations', [0])
+        readonly = Bool(Eval('allocations', [0]))
         if 'readonly' in cls.company.states:
             cls.company.states['readonly'] |= readonly
         else:
