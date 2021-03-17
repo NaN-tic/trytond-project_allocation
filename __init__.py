@@ -10,7 +10,3 @@ def register():
         allocation.Allocation,
         allocation.Work,
         module='project_allocation', type_='model')
-    Pool.register(
-        module='project_allocation', type_='wizard')
-    Pool.register(
-        module='project_allocation', type_='report')
