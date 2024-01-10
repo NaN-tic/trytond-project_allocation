@@ -14,7 +14,7 @@ class Allocation(ModelSQL, ModelView):
     employee = fields.Many2One('company.employee', 'Employee', required=True,
             domain=[
                 ('company', '=', Eval('company')),
-            ], depends=['company'], ondelete='CASCADE')
+            ], ondelete='CASCADE')
     work = fields.Many2One('project.work', 'Work', required=True,
         ondelete='CASCADE')
     company = fields.Function(fields.Many2One('company.company', 'Company'),
