@@ -13,7 +13,7 @@ class Allocation(ModelSQL, ModelView):
     __name__ = 'project.allocation'
     employee = fields.Many2One('company.employee', 'Employee', required=True,
             domain=[
-                ('company', '=', Eval('company')),
+                ('company', '=', Eval('company', -1)),
             ], ondelete='CASCADE')
     work = fields.Many2One('project.work', 'Work', required=True,
         ondelete='CASCADE')
