@@ -46,11 +46,11 @@ class Work(metaclass=PoolMeta):
     @classmethod
     def __setup__(cls):
         super(Work, cls).__setup__()
-        readonly = Bool(Eval('allocations', [0]))
-        if 'readonly' in cls.company.states:
-            cls.company.states['readonly'] |= readonly
+        editable = ~Bool(Eval('allocations', [0]))
+        if cls.company.states.get('editable') is not None:
+            cls.company.states['editable'] &= editable
         else:
-            cls.company.states['readonly'] = readonly
+            cls.company.states['editable'] = editable
 
     def get_employees(self, name):
         return ', '.join(sorted([x.employee.rec_name for x in
